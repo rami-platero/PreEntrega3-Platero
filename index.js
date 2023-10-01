@@ -66,7 +66,7 @@ const getQuantity = (product) => {
     }
   }
 };
-  
+
 // Calcula precio por cantidad y agrega producto al carrito de compras
 const addItemToCart = (product) => {
   const cartProduct = product;
@@ -108,22 +108,136 @@ const shop = () => {
 
   let option;
   option = prompt(
-    `Catalogo de Productos\n\nIngresa un numero para seleccionar el producto a agregar al carrito de compras.\nEscribe SALIR para volver al menu.\n\n${list}`
+    `Catálogo de Productos\n\nIngresa un numero para seleccionar el producto a agregar al carrito de compras.\nEscribe SALIR para volver al menú principal.\n\n${list}`
   );
 
   while (option.trim().toUpperCase() !== "SALIR") {
-    if (
+    while (
       isNaN(option) ||
       Number(option) > products.length ||
       Number(option) < 1
     ) {
       alert("Ingresa una opcion valida.");
       option = prompt(
-        `Catalogo de Productos\n\nIngresa un numero para seleccionar el producto a agregar al carrito de compras.\nEscribe SALIR para volver al menu.\n\n${list}`
+        `Catalogo de Productos\n\nIngresa un numero para seleccionar el producto a agregar al carrito de compras.\nEscribe SALIR para volver al menú principal.\n\n${list}`
       );
     }
 
-    return addItemToCart(products[Number(option)-1]);
+    return addItemToCart(products[Number(option) - 1]);
+  }
+  return;
+};
+
+const getCartList = () => {
+  // Pasa la lista de products a string
+  return (cartList = cart.products
+    .map((item, index) => {
+      return `${index + 1}. ${item.name} (x${
+        item.quantity
+      }) - $${item.price.toLocaleString(
+        "en-US"
+      )}.00 c/u - Total: $${item.total.toLocaleString("en-US")}.00\n`;
+    })
+    .join(""));
+};
+
+const selectCartItem = (action) => {
+  const cartList = getCartList();
+  let option;
+  option = prompt(
+    `Tu carrito de compras\n\n${cartList}\nElige un producto del carrito a ${action}.`
+  );
+  while (
+    isNaN(option) ||
+    Number(option) > cart.products.length ||
+    Number(option) < 1
+  ) {
+    alert("Ingresa una opcion valida.");
+    option = prompt(
+      `Tu carrito de compras\n\n${cartList}\nElige un producto del carrito a ${action}.`
+    );
+  }
+  return cart.products[option - 1];
+};
+
+const updateItemQuantity = () => {
+  const selectedItem = selectCartItem("actualizar");
+
+  let quantity;
+  quantity = prompt(
+    `Producto seleccionado - ${
+      selectedItem.name
+    } - $${selectedItem.price.toLocaleString(
+      "en-US"
+    )}.00\nIngresa la nueva cantidad.`
+  );
+  while (isNaN(quantity) || Number(quantity) < 1) {
+    alert("Ingresa una cantidad valida.");
+    quantity = prompt(
+      `Producto seleccionado - ${
+        selectedItem.name
+      } - $${selectedItem.price.toLocaleString(
+        "en-US"
+      )}.00\nIngresa la nueva cantidad.`
+    );
+  }
+  const newQuantity = Number(quantity);
+  selectedItem.quantity = newQuantity;
+  selectedItem.total = selectedItem.quantity * selectedItem.price;
+
+  // update product
+  cart.products = cart.products.map((item) => {
+    return item.name === selectedItem.name ? selectedItem : item;
+  });
+  // update cart total
+  return updateCartTotal();
+};
+
+const removeItemFromCart = () => {
+  const selectedItem = selectCartItem("quitar");
+  const index = cart.products.indexOf(
+    (product) => product.name === selectedItem.name
+  );
+  // remove item from cart products array
+  cart.products.splice(index, 1);
+
+  return updateCartTotal();
+};
+
+const viewCart = () => {
+  const cartList = getCartList();
+
+  let option;
+  if (!cart.products.length) {
+    return alert(`Tu carrito de compras esta vacio!`);
+  } else {
+    option = prompt(
+      `Tu carrito de compras\n\n${cartList}\nTotal: $${cart.total.toLocaleString(
+        "en-US"
+      )}.00\n\nPara realizar cambios o continuar con el pago selecciona una opción ingresando el número correspondiente en el menu de opciones.\n\n1. Actualizar la cantidad de un producto.\n2. Quitar un producto del carrito de compras\n3. Continuar con el pago\nIngresa SALIR para volver al menú principal.`
+    );
+
+    while (option.trim().toUpperCase() !== "SALIR") {
+      switch (Number(option)) {
+        case 1:
+          updateItemQuantity();
+          return viewCart();
+        case 2:
+          removeItemFromCart();
+          return viewCart();
+        case 3:
+          break;
+
+        default:
+          alert("Ingresa una opcion valida.");
+          break;
+      }
+      option = prompt(
+        `Tu carrito de compras\n\n${cartList}\nTotal: $${cart.total.toLocaleString(
+          "en-US"
+        )}.00\n\nPara realizar cambios o continuar con el pago selecciona una opción ingresando el número correspondiente en el menu de opciones.\n\n1. Actualizar la cantidad de un producto.\n2. Quitar un producto del carrito de compras\n3. Continuar con el pago\nIngresa SALIR para volver al menú principal.`
+      );
+    }
   }
   return;
 };
@@ -133,12 +247,12 @@ const main = () => {
   option = optionsPrompt(cart.total);
 
   while (option.trim().toUpperCase() !== "SALIR") {
-    switch (parseInt(option)) {
+    switch (Number(option)) {
       case 1:
-        shop()
+        shop();
         break;
       case 2:
-        alert("Carrito de compras");
+        viewCart();
         break;
       case 3:
         alert("Pagando...");

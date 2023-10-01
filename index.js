@@ -219,7 +219,7 @@ const handleCart = () => {
     option = prompt(
       `Tu carrito de compras\n\n${cartList}\nTotal: $${cart.total.toLocaleString(
         "en-US"
-      )}.00\n\nPara realizar cambios o continuar con el pago selecciona una opción ingresando el número correspondiente en el menu de opciones.\n\n1. Actualizar la cantidad de un producto.\n2. Quitar un producto del carrito de compras\nIngresa SALIR para volver al menú principal.`
+      )}.00\n\nPara realizar cambios en el carrito de compras selecciona una opción ingresando el número correspondiente en el menu de opciones.\n\n1. Actualizar la cantidad de un producto.\n2. Quitar un producto del carrito de compras\nIngresa SALIR para volver al menú principal.`
     );
 
     while (option.trim().toUpperCase() !== "SALIR") {
@@ -237,7 +237,7 @@ const handleCart = () => {
       option = prompt(
         `Tu carrito de compras\n\n${cartList}\nTotal: $${cart.total.toLocaleString(
           "en-US"
-        )}.00\n\nPara realizar cambios o continuar con el pago selecciona una opción ingresando el número correspondiente en el menu de opciones.\n\n1. Actualizar la cantidad de un producto.\n2. Quitar un producto del carrito de compras\nIngresa SALIR para volver al menú principal.`
+        )}.00\n\nPara realizar cambios en el carrito de compras selecciona una opción ingresando el número correspondiente en el menu de opciones.\n\n1. Actualizar la cantidad de un producto.\n2. Quitar un producto del carrito de compras\nIngresa SALIR para volver al menú principal.`
       );
     }
   }
@@ -310,7 +310,7 @@ const main = () => {
           );
         } else {
           if (handlePayment()) {
-            // Si retorna 1 es porque el usuario pago
+            // Si retorna true es porque el usuario pagó
             return;
           } else {
             // De lo contrario vuelve al menu principal

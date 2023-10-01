@@ -1,5 +1,6 @@
 // Inicializar carrito
 const cart = { products: [], total: 0 };
+
 // lista de productos
 const products = [
   {
@@ -25,10 +26,10 @@ const products = [
 ];
 
 // Funcion que dinamicamente muestra distintos prompts en caso de que tengamos un total a pagar
-const optionsPrompt = (total) => {
-  if (total > 0) {
+const optionsPrompt = () => {
+  if (cart.total > 0) {
     return prompt(
-      `¡Bienvenido a Gaming Components!\nNos complace ofrecerte una experiencia excepcional de compra de componentes para juegos. En nuestro catálogo, encontrarás una amplia selección de las últimas y más avanzadas tarjetas gráficas de alta gama.\nDESCUENTO: Si el monto total de tu compra supera los $10000 USD se aplicará un descuento del 20%!\n\nPara continuar selecciona una opción ingresando el número correspondiente en el menu de opciones.\nMonto total: $${total.toLocaleString(
+      `¡Bienvenido a Gaming Components!\nNos complace ofrecerte una experiencia excepcional de compra de componentes para juegos. En nuestro catálogo, encontrarás una amplia selección de las últimas y más avanzadas tarjetas gráficas de alta gama.\nDESCUENTO: Si el monto total de tu compra supera los $10000 USD se aplicará un descuento del 20%!\n\nPara continuar selecciona una opción ingresando el número correspondiente en el menu de opciones.\nMonto total: $${cart.total.toLocaleString(
         "en-US"
       )}.00\n\n1. Compra de productos\n2. Mi carrito\n3. Pagar\nEscribe SALIR para salir.`
     );
@@ -97,7 +98,7 @@ const addItemToCart = (product) => {
 };
 
 // Funcion para agregar productos al carrito
-const shop = () => {
+const handleShop = () => {
   const list = products
     .map((product, index) => {
       return `${index + 1}. ${product.name} - $${product.price.toLocaleString(
@@ -128,8 +129,8 @@ const shop = () => {
   return;
 };
 
+// Retorna la lista de productos del carrito en un formato legible
 const getCartList = () => {
-  // Pasa la lista de products a string
   return (cartList = cart.products
     .map((item, index) => {
       return `${index + 1}. ${item.name} (x${
@@ -141,6 +142,7 @@ const getCartList = () => {
     .join(""));
 };
 
+// Retorna un item del carrito en base a la opcion que el usuario eliga
 const selectCartItem = (action) => {
   const cartList = getCartList();
   let option;
@@ -160,6 +162,7 @@ const selectCartItem = (action) => {
   return cart.products[option - 1];
 };
 
+// Funcion para acutalizar la cantidad de un item en el carrito
 const updateItemQuantity = () => {
   const selectedItem = selectCartItem("actualizar");
 
@@ -193,6 +196,7 @@ const updateItemQuantity = () => {
   return updateCartTotal();
 };
 
+// Funcion para quitar item del carrito
 const removeItemFromCart = () => {
   const selectedItem = selectCartItem("quitar");
   const index = cart.products.indexOf(
@@ -204,7 +208,8 @@ const removeItemFromCart = () => {
   return updateCartTotal();
 };
 
-const viewCart = () => {
+// Handler para la opcion del carrito
+const handleCart = () => {
   const cartList = getCartList();
 
   let option;
@@ -224,7 +229,7 @@ const viewCart = () => {
           return viewCart();
         case 2:
           removeItemFromCart();
-          return viewCart();
+          return handleCart();
         case 3:
           break;
 
@@ -242,26 +247,84 @@ const viewCart = () => {
   return;
 };
 
+// Renderiza dinamicamente el prompt en base a si somos aplicables al descuento del 20% (retorna true si se realiza el pago)
+const pay = (message = "", final = cart.total) => {
+  const cartList = getCartList();
+  let option;
+  option = prompt(
+    `${message}\n\nResumen\n${cartList}\nSubtotal: $${cart.total.toLocaleString(
+      "en-US"
+    )}.00\nTotal: $${final.toLocaleString(
+      "en-US"
+    )}.00\n\nPara realizar el pago ingresa PAGAR.\nPara volver al menu principal ingresa SALIR`
+  );
+  while (
+    option.trim().toUpperCase() !== "SALIR" &&
+    option.trim().toUpperCase() !== "PAGAR"
+  ) {
+    alert("Ingresa una opcion valida");
+    option = prompt(
+      `${message}\n\nResumen\n${cartList}\nSubtotal: $${cart.total.toLocaleString(
+        "en-US"
+      )}.00\nTotal: $${final.toLocaleString(
+        "en-US"
+      )}.00\n\nPara realizar el pago ingresa PAGAR.\nPara volver al menu principal ingresa SALIR`
+    );
+  }
+  if (option.trim().toUpperCase() === "PAGAR") {
+    return true
+  }
+  return false
+};
+
+// handler para la opcion de checkout
+const handlePay = () => {
+  // chequea si el monto total es aplicable al descuento
+  if (cart.total >= 10000) {
+    let final = cart.total - (20 * cart.total) / 100;
+    return pay(
+      "Tu monto supera los $10,000.00 USD por lo tanto es aplicable al descuento!",
+      final
+    );
+  } else {
+    return pay(
+      "Tu monto no supera los $10,000.00 USD, por lo tanto no se le aplicará el descuento."
+    );
+  }
+};
+
+// Funcion principal
 const main = () => {
   let option;
-  option = optionsPrompt(cart.total);
+  option = optionsPrompt();
 
   while (option.trim().toUpperCase() !== "SALIR") {
     switch (Number(option)) {
       case 1:
-        shop();
+        handleShop();
         break;
       case 2:
-        viewCart();
+        handleCart();
         break;
       case 3:
-        alert("Pagando...");
-        break;
+        if (cart.total === 0) {
+          alert(
+            "No puedes continuar con el pago porque no has agregado ningún producto al carrito aún."
+          );
+        } else {
+          if (handlePay()) {
+            // Si retorna 1 es porque el usuario pago
+            return;
+          } else {
+            // De lo contrario vuelve al menu principal
+            break;
+          }
+        }
       default:
         alert("Ingresa una opcion valida.");
         break;
     }
-    option = optionsPrompt(cart.total);
+    option = optionsPrompt();
   }
 };
 

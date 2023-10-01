@@ -47,6 +47,87 @@ const updateCartTotal = () => {
   return (cart.total = total);
 };
 
+// Funcion para que el usuario ingrese la cantidad a llevar
+const getQuantity = (product) => {
+  let quantity;
+
+  while (true) {
+    quantity = prompt(
+      `Producto seleccionado - ${
+        product.name
+      } - $${product.price.toLocaleString(
+        "en-US"
+      )}.00\nElige la cantidad que desea llevar.`
+    );
+    if (quantity !== null && !isNaN(quantity) && parseInt(quantity) > 0) {
+      return Number(quantity);
+    } else {
+      alert("Ingresa una cantidad válida.");
+    }
+  }
+};
+  
+// Calcula precio por cantidad y agrega producto al carrito de compras
+const addItemToCart = (product) => {
+  const cartProduct = product;
+  // Chequea si el product ya esta en el carrito
+  const alreadyInCart = cart.products.some((cartProduct) => {
+    return cartProduct.name === product.name;
+  });
+
+  if (alreadyInCart) {
+    const quantity = getQuantity(product);
+    const index = cart.products.findIndex((p) => p.name === product.name);
+    // update old values
+    cart.products[index].quantity += quantity;
+    cart.products[index].total =
+      cart.products[index].price * cart.products[index].quantity;
+    // update cart total
+    return updateCartTotal();
+  } else {
+    const quantity = getQuantity(product);
+    // set cart properties
+    cartProduct.quantity = quantity;
+    cartProduct.total = cartProduct.price * quantity;
+    // add item to cart
+    cart.products.push(cartProduct);
+    // update cart total
+    return updateCartTotal();
+  }
+};
+
+// Funcion para agregar productos al carrito
+const shop = () => {
+  const list = products
+    .map((product, index) => {
+      return `${index + 1}. ${product.name} - $${product.price.toLocaleString(
+        "en-US"
+      )}.00\n`;
+    })
+    .join("");
+
+  let option;
+  option = prompt(
+    `Catalogo de Productos\n\nIngresa un numero para seleccionar el producto a agregar al carrito de compras.\nEscribe SALIR para volver al menu.\n\n${list}`
+  );
+
+  while (option.trim().toUpperCase() !== "SALIR") {
+    if (
+      isNaN(option) ||
+      Number(option) > products.length ||
+      Number(option) < 1
+    ) {
+      alert("Ingresa una opcion valida.");
+      option = prompt(
+        `Catalogo de Productos\n\nIngresa un numero para seleccionar el producto a agregar al carrito de compras.\nEscribe SALIR para volver al menu.\n\n${list}`
+      );
+    }
+
+    return addItemToCart(products[Number(option)-1]);
+  }
+  return;
+};
+
 const main = () => {
   let option;
   option = optionsPrompt(cart.total);
@@ -54,7 +135,7 @@ const main = () => {
   while (option.trim().toUpperCase() !== "SALIR") {
     switch (parseInt(option)) {
       case 1:
-        alert("Compra de productos");
+        shop()
         break;
       case 2:
         alert("Carrito de compras");

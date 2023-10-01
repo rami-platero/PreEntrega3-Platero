@@ -219,7 +219,7 @@ const handleCart = () => {
     option = prompt(
       `Tu carrito de compras\n\n${cartList}\nTotal: $${cart.total.toLocaleString(
         "en-US"
-      )}.00\n\nPara realizar cambios o continuar con el pago selecciona una opción ingresando el número correspondiente en el menu de opciones.\n\n1. Actualizar la cantidad de un producto.\n2. Quitar un producto del carrito de compras\n3. Continuar con el pago\nIngresa SALIR para volver al menú principal.`
+      )}.00\n\nPara realizar cambios o continuar con el pago selecciona una opción ingresando el número correspondiente en el menu de opciones.\n\n1. Actualizar la cantidad de un producto.\n2. Quitar un producto del carrito de compras\nIngresa SALIR para volver al menú principal.`
     );
 
     while (option.trim().toUpperCase() !== "SALIR") {
@@ -230,9 +230,6 @@ const handleCart = () => {
         case 2:
           removeItemFromCart();
           return handleCart();
-        case 3:
-          break;
-
         default:
           alert("Ingresa una opcion valida.");
           break;
@@ -240,7 +237,7 @@ const handleCart = () => {
       option = prompt(
         `Tu carrito de compras\n\n${cartList}\nTotal: $${cart.total.toLocaleString(
           "en-US"
-        )}.00\n\nPara realizar cambios o continuar con el pago selecciona una opción ingresando el número correspondiente en el menu de opciones.\n\n1. Actualizar la cantidad de un producto.\n2. Quitar un producto del carrito de compras\n3. Continuar con el pago\nIngresa SALIR para volver al menú principal.`
+        )}.00\n\nPara realizar cambios o continuar con el pago selecciona una opción ingresando el número correspondiente en el menu de opciones.\n\n1. Actualizar la cantidad de un producto.\n2. Quitar un producto del carrito de compras\nIngresa SALIR para volver al menú principal.`
       );
     }
   }
@@ -278,7 +275,7 @@ const pay = (message = "", final = cart.total) => {
 };
 
 // handler para la opcion de checkout
-const handlePay = () => {
+const handlePayment = () => {
   // chequea si el monto total es aplicable al descuento
   if (cart.total >= 10000) {
     let final = cart.total - (20 * cart.total) / 100;
@@ -312,7 +309,7 @@ const main = () => {
             "No puedes continuar con el pago porque no has agregado ningún producto al carrito aún."
           );
         } else {
-          if (handlePay()) {
+          if (handlePayment()) {
             // Si retorna 1 es porque el usuario pago
             return;
           } else {

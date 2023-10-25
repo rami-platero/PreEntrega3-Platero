@@ -304,4 +304,114 @@ const main = () => {
 
 //main();
 
+const products = [
+  {
+    id: 1,
+    name: "MSI GeForce RTX 4090 GAMING X TRIO 24G",
+    category: "Graphics Card",
+    price: 1700,
+    image:
+      "https://d2r7p0safdzsvt.cloudfront.net/6b72b77b2b7fdb9fc0d7254a2576fa31318fc3fc2415e9a37babba149fb95004",
+  },
+  {
+    id: 2,
+    name: "MSI Radeon RX 6650 XT MECH 2X 8G OC",
+    category: "Graphics Card",
+    price: 235,
+    image:
+      "https://d2r7p0safdzsvt.cloudfront.net/41ec60029448bf5a0bdd30f2c765f500ca161076601e269e87b2f12c9b375a6e",
+  },
+  {
+    id: 3,
+    name: "MSI B450 TOMAHAWK MAX II",
+    category: "Motherboard",
+    price: 120,
+    image:
+      "https://d2r7p0safdzsvt.cloudfront.net/8023348e022fd03baad827f4bb1ceb1ddedee7fd56338e37ddbaffbb13694747",
+  },
+  {
+    id: 4,
+    name: "Gigabyte Z690 AORUS ULTRA",
+    category: "Motherboard",
+    price: 250,
+    image:
+      "https://d2r7p0safdzsvt.cloudfront.net/f0df37e4fdc5a8841986400d36b83557b24d4af32e3d1505f2d6d4dbde780d6d",
+  },
+  {
+    id: 5,
+    name: "ASUS ROG Keris Wireless EVA Edition",
+    category: "Mouse",
+    price: 106,
+    image:
+      "https://d2r7p0safdzsvt.cloudfront.net/295e811225e866e900cc9f5b75978e468bcf6023a0338d301ce018d7298c277f",
+  },
+  {
+    id: 6,
+    name: "ASUS VZ279HEG1R Gaming Monitor – 27 inch Full HD",
+    category: "Monitor",
+    price: 130,
+    image:
+      "https://d2r7p0safdzsvt.cloudfront.net/852f26fe04412314126cfa65573737d0720d6b1bf8c07a503a9c176076011fc5",
+  },
+];
 
+const cart = { products: [], total: 0 };
+
+// formats price => 1000 to 999,99
+const formatPrice = (price) => {
+  return parseFloat((price - 0.01).toFixed(2)).toLocaleString("en-US");
+};
+
+// load products and renders them in the DOM on page load
+const loadProducts = () => {
+  const $template = document.getElementById("product-template").content;
+  const $container = document.getElementById("products-list");
+  const $fragment = document.createDocumentFragment();
+
+  products.forEach((product) => {
+    $template.querySelector("img").setAttribute("src", product.image);
+    $template.querySelector("img").setAttribute("alt", product.name);
+    $template.querySelector(".product-name").textContent = product.name;
+    $template.querySelector(".product-price").textContent = product.category;
+    $template.querySelector("button").dataset.productId = product.id;
+    const formattedPrice = formatPrice(product.price);
+    $template.querySelector(
+      ".product-category"
+    ).textContent = `$ ${formattedPrice}`;
+
+    let $clone = document.importNode($template, true);
+    $fragment.appendChild($clone);
+  });
+
+  $container.appendChild($fragment);
+};
+
+// checks if cart is empty or not and dynamically renders items or message
+const getCart = () => {
+  const cart = localStorage.getItem("cart");
+  const $cart = document.getElementById("cart");
+  if (!cart) {
+    const element = document.createElement("p");
+    element.textContent = "Your cart is empty!";
+    element.id = "cartMessage";
+    $cart.appendChild(element);
+  }
+};
+
+const handleAddItemToCart = (id) => {
+  const product = products.find((p) => {
+    return p.id === Number(id);
+  });
+
+  const message = document.querySelector("#cartMessage");
+};
+
+loadProducts();
+getCart();
+
+document.querySelectorAll(".add-to-cart").forEach((button) => {
+  button.addEventListener("click", (event) => {
+    const id = event.target.dataset.productId;
+    handleAddItemToCart(id);
+  });
+});

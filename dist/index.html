@@ -21,32 +21,78 @@
         <h2 class="text-xl font-semibold mb-4">All products</h2>
         <div id="products-list" class="flex flex-wrap gap-2">
             <template id="product-template">
-                <div class="product-container border-solid rounded-lg bg-black bg-opacity-20 border border-zinc-500 p-4 w-fit flex flex-col flex-1">
+                <div
+                    class="product-container border-solid rounded-lg bg-black bg-opacity-20 border border-zinc-500 p-4 w-fit flex flex-col flex-1">
                     <div class="flex flex-1 flex-col max-md:items-center">
-                        <img class="product-image max-w-xs m-auto aspect-square object-cover"/>
+                        <img class="product-image max-w-xs m-auto aspect-square object-cover" />
                         <h3 class="product-name font-bold"></h3>
                         <h4 class="product-category text-sm"></h4>
                         <h4 class="product-price text-sm font-semibold"></h4>
                     </div>
-                    <button class="add-to-cart bg-indigo-700 bg-opacity-50 border-2 border-indigo-500 w-full py-2 mt-4 rounded-2xl text-sm  text-zinc-200 font-semibold hover:bg-indigo-500 transition ease-in-out">Add to cart</button>
+                    <button
+                        class="add-to-cart bg-indigo-700 bg-opacity-50 border-2 border-indigo-500 w-full py-2 mt-4 rounded-2xl text-sm  text-zinc-200 font-semibold hover:bg-indigo-500 transition ease-in-out">Add
+                        to cart</button>
                 </div>
             </template>
         </div>
     </section>
-    <section id="cart">
+    <section>
         <h2 class="text-xl font-semibold mb-4">My cart</h2>
-        <div id="cart-list" class="flex flex-wrap gap-2">
-            <template id="cart-template">
-                <div class="product-container border-solid rounded-lg bg-black bg-opacity-20 border border-zinc-500 p-4 w-fit flex flex-col flex-1">
-                    <div class="flex flex-1 flex-col max-md:items-center">
-                        <img class="product-image max-w-xs m-auto aspect-square object-cover"/>
-                        <h3 class="product-name font-bold"></h3>
-                        <h4 class="product-category text-sm"></h4>
-                        <h4 class="product-price text-sm font-semibold"></h4>
+        <div class="flex gap-4">
+            <div id="cart" class="flex flex-wrap gap-4 max-w-2xl w-full">
+                <template id="cart-template">
+                    <div
+                        class="cart-item group border-solid rounded-lg bg-black bg-opacity-20 border border-zinc-500 p-4 w-full flex gap-4 justify-start relative">
+                        <img class="product-image max-w-thumbnail aspect-square object-cover" />
+                        <div class="flex flex-col gap-2 justify-center w-full">
+                            <h3 class="product-name font-bold"></h3>
+                            <h4 class="product-category text-sm"></h4>
+                            <div class="flex justify-between">
+                                <h4 class="product-total-price font-semibold"></h4>
+                                <div class="flex items-center gap-4">
+                                    <button
+                                        class="increase text-xl font-semibold text-zinc-400 bg-zinc-800 w-9 flex items-center justify-center rounded-full border-2 border-zinc-600 hover:bg-zinc-900 transition ease-in-out"><span
+                                            class="mb-1 pointer-events-none">+</span></button>
+                                    <h4 class="amount text-xl"></h4>
+                                    <button
+                                        class="decrease text-xl font-semibold text-zinc-400 bg-zinc-800 w-9 flex items-center justify-center rounded-full border-2 border-zinc-600 hover:bg-zinc-900 transition ease-in-out"><span
+                                            class="mb-1 pointer-events-none">-</span></button>
+                                </div>
+                            </div>
+                            <button
+                                class="remove text-xl font-normal text-zinc-900 bg-red-500 items-center justify-center  border-1 border-red-900 rounded-full w-6 hover:bg-red-400 transition ease-in-out absolute -top-2 -right-2 hidden group-hover:flex"><span
+                                    class="mb-1 pointer-events-none font-semibold text-sm">x</span></button>
+                        </div>
                     </div>
-                    <button class="bg-indigo-700 bg-opacity-50 border-2 border-indigo-500 w-full py-2 mt-4 rounded-2xl text-sm  text-zinc-200 font-semibold hover:bg-indigo-500 transition ease-in-out">Add to cart</button>
-                </div>
-            </template>
+                </template>
+            </div>
+            <div id="summary" class="max-w-xl w-full">
+                <template id="summary-template">
+                    <div id="summary-container">
+                        <h3 class="text-xl font-semibold">Summary</h3>
+                        <div class="p-2 flex flex-col gap-2">
+                            <hr class="mt-2 opacity-25">
+                            <div class="flex justify-between">
+                                <h4>Subtotal</h4>
+                                <h4 class="subtotal font-medium"></h4>
+                            </div>
+                            <div class="flex justify-between">
+                                <h4>Discount</h4>
+                                <h4 class="discount text-red-500 font-medium"></h4>
+                            </div>
+                            <div class="flex justify-between">
+                                <h4>Shipping</h4>
+                                <h4 class="font-medium">Free</h4>
+                            </div>
+                            <hr class="mt-4 opacity-25">
+                            <div class="flex justify-between">
+                                <h4 class="font-semibold">Total</h4>
+                                <h4 class="total font-medium"></h4>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
         </div>
     </section>
     <section>

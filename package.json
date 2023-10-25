@@ -1,0 +1,23 @@
+{
+  "name": "buyproducts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rami-platero/products-store.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rami-platero/products-store/issues"
+  },
+  "homepage": "https://github.com/rami-platero/products-store#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.3.4"
+  }
+}

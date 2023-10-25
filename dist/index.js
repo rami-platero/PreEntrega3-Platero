@@ -1,29 +1,6 @@
-// Inicializar carrito
-const cart = { products: [], total: 0 };
+/* // Inicializar carrito
 
 // lista de productos
-const products = [
-  {
-    name: "ASUS ROG Strix NVIDIA GeForce RTX 4070 Ti",
-    price: 930,
-  },
-  {
-    name: "MSI Gaming GeForce RTX 4060 Ti",
-    price: 400,
-  },
-  {
-    name: "Gigabyte GeForce RTX 4080 Gaming",
-    price: 1200,
-  },
-  {
-    name: "MSI GeForce RTX 3090 Ti",
-    price: 1800,
-  },
-  {
-    name: "ZOTAC Gaming GeForce RTX 3080 Ti",
-    price: 1250,
-  },
-];
 
 // Funcion que dinamicamente muestra distintos prompts en caso de que tengamos un total a pagar
 const optionsPrompt = () => {
@@ -269,9 +246,9 @@ const pay = (message = "", final = cart.total) => {
     );
   }
   if (option.trim().toUpperCase() === "PAGAR") {
-    return true
+    return true;
   }
-  return false
+  return false;
 };
 
 // handler para la opcion de checkout
@@ -323,6 +300,8 @@ const main = () => {
     }
     option = optionsPrompt();
   }
-};
+}; */
 
-main();
+//main();
+
+

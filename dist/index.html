@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./output.css">
+    <title>Gaming Components</title>
+</head>
+
+<body class="bg-zinc-900 max-w-7xl m-auto px-4 flex flex-col gap-12 pb-10">
+    <!-- Hero Section -->
+    <section class="text-center mt-8 flex flex-col gap-2">
+        <h1 class="text-2xl font-semibold">Welcome to Gaming Components</h1>
+        <p class="text-sm">Upgrade your gaming rig and unlock the full potential of your gaming adventures with
+            Gaming
+            Components!</p>
+    </section>
+    <!-- Products List -->
+    <section>
+        <h2 class="text-xl font-semibold mb-4">All products</h2>
+        <div id="products-list" class="flex flex-wrap gap-2">
+            <template id="product-template">
+                <div class="product-container border-solid rounded-lg bg-black bg-opacity-20 border border-zinc-500 p-4 w-fit flex flex-col flex-1">
+                    <div class="flex flex-1 flex-col max-md:items-center">
+                        <img class="product-image max-w-xs m-auto aspect-square object-cover"/>
+                        <h3 class="product-name font-bold"></h3>
+                        <h4 class="product-category text-sm"></h4>
+                        <h4 class="product-price text-sm font-semibold"></h4>
+                    </div>
+                    <button class="add-to-cart bg-indigo-700 bg-opacity-50 border-2 border-indigo-500 w-full py-2 mt-4 rounded-2xl text-sm  text-zinc-200 font-semibold hover:bg-indigo-500 transition ease-in-out">Add to cart</button>
+                </div>
+            </template>
+        </div>
+    </section>
+    <section id="cart">
+        <h2 class="text-xl font-semibold mb-4">My cart</h2>
+        <div id="cart-list" class="flex flex-wrap gap-2">
+            <template id="cart-template">
+                <div class="product-container border-solid rounded-lg bg-black bg-opacity-20 border border-zinc-500 p-4 w-fit flex flex-col flex-1">
+                    <div class="flex flex-1 flex-col max-md:items-center">
+                        <img class="product-image max-w-xs m-auto aspect-square object-cover"/>
+                        <h3 class="product-name font-bold"></h3>
+                        <h4 class="product-category text-sm"></h4>
+                        <h4 class="product-price text-sm font-semibold"></h4>
+                    </div>
+                    <button class="bg-indigo-700 bg-opacity-50 border-2 border-indigo-500 w-full py-2 mt-4 rounded-2xl text-sm  text-zinc-200 font-semibold hover:bg-indigo-500 transition ease-in-out">Add to cart</button>
+                </div>
+            </template>
+        </div>
+    </section>
+    <section>
+
+    </section>
+    <script src="./index.js"></script>
+</body>
+
+</html>

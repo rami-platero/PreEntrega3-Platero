@@ -14,7 +14,7 @@ const notifyError = (message) => {
       background: "#ff383f",
     },
   }).showToast();
-}
+};
 
 // Toastify Success
 const notifySuccess = (message) => {
@@ -26,7 +26,7 @@ const notifySuccess = (message) => {
       background: "#10ba00",
     },
   }).showToast();
-}
+};
 
 // Util - Updates product total
 const updateProductTotal = (index) => {
@@ -66,7 +66,7 @@ const handleProducts = async () => {
     // render products
     renderProducts();
   } catch (error) {
-    notifyError("Error: Unable to load products.")
+    notifyError("Error: Unable to load products.");
   }
 };
 
@@ -114,7 +114,7 @@ const updateSummary = () => {
 
 // UI - renders products in the dom
 const renderProducts = () => {
-  if (!products) return
+  if (!products) return;
   const $template = document.getElementById("product-template").content;
   const $container = document.getElementById("products-list");
   const $fragment = document.createDocumentFragment();
@@ -133,7 +133,7 @@ const renderProducts = () => {
   });
 
   $container.appendChild($fragment);
-}
+};
 
 // UI - removes summary container from the dom
 const clearSummary = () => {
@@ -214,6 +214,7 @@ const handleAddItemToCart = (id) => {
     let $clone = document.importNode($template, true);
     $fragment.appendChild($clone);
     $cart.appendChild($fragment);
+    return true
   } else {
     // get quantity
     const newQuantity = cart.products[itemInCart].quantity + 1;
@@ -221,6 +222,7 @@ const handleAddItemToCart = (id) => {
     cart.products[itemInCart].quantity = newQuantity;
     updateProductTotal(itemInCart);
     updateAmount(product.id, newQuantity, itemInCart);
+    return false
   }
 };
 
@@ -236,8 +238,8 @@ const handleQuantity = (type, id) => {
       ? cart.products[cartItemIndex].quantity - 1
       : null;
 
-  if (!newQuantity) return;
-  if (type === "DECREASE" && newQuantity === 0) return;
+  if (!newQuantity) return false;
+  if (type === "DECREASE" && newQuantity === 0) return false;
 
   cart.products[cartItemIndex].quantity = newQuantity;
   updateProductTotal(cartItemIndex);
@@ -249,6 +251,7 @@ const handleQuantity = (type, id) => {
     newQuantity * cart.products[cartItemIndex].price
   );
   $cartItem.querySelector(".product-total-price").textContent = formattedPrice;
+  return true;
 };
 
 // HANDLER - remove item from cart
@@ -266,27 +269,32 @@ const handleRemoveItemFromCart = (id) => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  handleProducts()
+  handleProducts();
   handleCart();
   updateSummary();
 });
 
 document.addEventListener("click", (e) => {
   if (e.target.matches(".increase")) {
-    handleQuantity("INCREASE", e.target.dataset.id);
-    updateSubtotal();
-    updateSummary();
-    // update localstorage
-    saveCart();
-    notifySuccess("Updated quantity.")
+    const updated = handleQuantity("INCREASE", e.target.dataset.id);
+    if (updated) {
+      notifySuccess("Updated quantity.");
+      updateSubtotal();
+      updateSummary();
+      // update localstorage
+      saveCart();
+    }
   }
   if (e.target.matches(".decrease")) {
-    handleQuantity("DECREASE", e.target.dataset.id);
-    updateSubtotal();
-    updateSummary();
-    // update localstorage
-    saveCart();
-    notifySuccess("Updated quantity.")
+    // returns true if quantity was udpated, returns false if item quantity is 1
+    const updated = handleQuantity("DECREASE", e.target.dataset.id);
+    if (updated) {
+      notifySuccess("Updated quantity.");
+      updateSubtotal();
+      updateSummary();
+      // update localstorage
+      saveCart();
+    }
   }
   if (e.target.matches(".remove")) {
     handleRemoveItemFromCart(e.target.dataset.id);
@@ -294,14 +302,19 @@ document.addEventListener("click", (e) => {
     updateSummary();
     // update localstorage
     saveCart();
-    notifySuccess("Removed item from cart.")
+    notifySuccess("Removed item from cart.");
   }
   if (e.target.matches(".add-to-cart")) {
-    handleAddItemToCart(e.target.dataset.productId);
+    // returns true if new item was added, returns false if item already existed in cart and only updated the quantity
+    const added = handleAddItemToCart(e.target.dataset.productId);
+    if(added){
+      notifySuccess("Added item to cart.");
+    } else {
+      notifySuccess("Updated quantity.");
+    }
     updateSubtotal();
     updateSummary();
     // update localstorage
     saveCart();
-    notifySuccess("Added item to cart.")
   }
 });
